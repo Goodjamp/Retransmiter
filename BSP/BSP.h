@@ -39,14 +39,14 @@
 
 // KEY_CONTROL
 
-#define KEY_CONTROL_VIDEO_CH_58_PORT       GPIOB
-#define KEY_CONTROL_VIDEO_CH_58_PIN        LL_GPIO_PIN_0
-#define KEY_CONTROL_VIDEO_CH_12_PORT       GPIOA
-#define KEY_CONTROL_VIDEO_CH_12_PIN        LL_GPIO_PIN_0
-#define KEY_CONTROL_BINDING_58_PORT        GPIOA
-#define KEY_CONTROL_BINDING_58_PIN         LL_GPIO_PIN_1
-#define KEY_CONTROL_VIDEO_SOURCE_PORT      GPIOB
-#define KEY_CONTROL_VIDEO_SOURCE_PIN       LL_GPIO_PIN_1
+#define KEY_CONTROL_VIDEO_CH_58_RX_PORT       GPIOA
+#define KEY_CONTROL_VIDEO_CH_58_RX_PIN        LL_GPIO_PIN_0
+#define KEY_CONTROL_VIDEO_CH_13_RX_PORT       GPIOA
+#define KEY_CONTROL_VIDEO_CH_13_RX_PIN        LL_GPIO_PIN_1
+#define KEY_CONTROL_VIDEO_CH_58_TX_PORT       GPIOB
+#define KEY_CONTROL_VIDEO_CH_58_TX_PIN        LL_GPIO_PIN_0
+#define KEY_CONTROL_VIDEO_SOURCE_PORT         GPIOB
+#define KEY_CONTROL_VIDEO_SOURCE_PIN          LL_GPIO_PIN_1
 
 // BUTTONS
 #define BUTTONS_MENU_PORT            GPIOA
@@ -61,17 +61,17 @@
 // DEBUG
 #define DEBUG_1_GPIO_PORT            GPIOA
 #define DEBUG_1_GPIO_PIN             LL_GPIO_PIN_3
+//#define DEBUG_2_GPIO_PORT            GPIOB
+//#define DEBUG_2_GPIO_PIN             LL_GPIO_PIN_0
+//#define DEBUG_3_GPIO_PORT            GPIOB
+//#define DEBUG_3_GPIO_PIN             LL_GPIO_PIN_1
 #define DEBUG_2_GPIO_PORT            GPIOB
-#define DEBUG_2_GPIO_PIN             LL_GPIO_PIN_0
+#define DEBUG_2_GPIO_PIN             LL_GPIO_PIN_4
 #define DEBUG_3_GPIO_PORT            GPIOB
-#define DEBUG_3_GPIO_PIN             LL_GPIO_PIN_1
+#define DEBUG_3_GPIO_PIN             LL_GPIO_PIN_5
 #define DEBUG_4_GPIO_PORT            GPIOB
-#define DEBUG_4_GPIO_PIN             LL_GPIO_PIN_4
-#define DEBUG_5_GPIO_PORT            GPIOB
-#define DEBUG_5_GPIO_PIN             LL_GPIO_PIN_5
-#define DEBUG_6_GPIO_PORT            GPIOB
-#define DEBUG_6_GPIO_PIN             LL_GPIO_PIN_3
-#define DEBUG_7_GPIO_PORT            GPIOA
-#define DEBUG_7_GPIO_PIN             LL_GPIO_PIN_15
+#define DEBUG_4_GPIO_PIN             LL_GPIO_PIN_3
+#define DEBUG_5_GPIO_PORT            GPIOA
+#define DEBUG_5_GPIO_PIN             LL_GPIO_PIN_15
 
 #endif // __BSP_H__

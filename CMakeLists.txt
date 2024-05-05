@@ -24,15 +24,15 @@ set( APP_SRC
     App/Tasks/CrsfTask.c
     App/Tasks/ButtonsTask.c
     App/Tasks/ApplicationTask.c
-    App/KeyControl/KeyControl.c
-    App/KeyControl/KeyControl.h
+    App/ButtonProcessing/ButtonProcessing.c
+    App/ButtonProcessing/ButtonProcessing.h
 )
 
 set( APP_PATH
     App
     App/Settings
     App/Tasks
-    App/KeyControl
+    App/ButtonProcessing
 )
 
 set( BSP_SRC

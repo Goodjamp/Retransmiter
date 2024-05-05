@@ -14,9 +14,7 @@
 #include "CrsfTask.h"
 #include "Crsf.h"
 #include "CrsfFramesCache.h"
-#include "KeyControl.h"
-
-
+#include "ButtonProcessing.h"
 
 #define CRSF_TASK_RC_MAX                         1800
 
@@ -134,8 +132,8 @@ static void rxCrsfFrameCb(CrsfAddress address, CrsfFrame *frame)
         crsfFrameCachePush(&crsfFrameCache, address, CRSF_RC_CHANNELS_PACKED,
                            &frame->payload.rcChannelsPacked);
 
-        keyControlUpdate(crsfTaskDecode3StateSw(frame->payload.rcChannelsPacked.chValue[CRSF_TASK_RC_CH_KEY_TRIGER]),
-                         crsfTaskDecode2StateSw(frame->payload.rcChannelsPacked.chValue[CRSF_TASK_RC_CH_KEY]));
+        buttonUpdate(crsfTaskDecode3StateSw(frame->payload.rcChannelsPacked.chValue[CRSF_TASK_RC_CH_KEY_TRIGER]),
+                     crsfTaskDecode2StateSw(frame->payload.rcChannelsPacked.chValue[CRSF_TASK_RC_CH_KEY]));
         break;
 
     default:
@@ -399,7 +397,7 @@ int crsfTaskInit(void)
         return CRSF_TASK_CREATE_TASK_ERROR;
     }
 
-    keyControlInit();
+    buttonInit();
 
     return CRSF_TASK_OK;
 }
