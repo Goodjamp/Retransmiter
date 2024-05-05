@@ -1,19 +1,15 @@
-rm RcModule.hex
-rm TransmiterModule.hex
+rmdir /S /Q build
+set buildType=RELEASE
+set /A varNuber = 0
 
-echo Build RcModule
-cd RcModule
+:: Count the number of input arguments
+for %%x in (%*) do Set /A  varNuber+=1
 
-:: Use call command to provide retirn from the build.bat to this file. Originaly, without call,
-:: we cant use nested *.bat file.
-call build.bat RELEASE
+if %varNuber%==1 set buildType=%1
+
+cmake -DCMAKE_C_COMPILER:FILEPATH=arm-none-eabi-gcc.exe -DCMAKE_CXX_COMPILER:FILEPATH="arm-none-eabi-g++.exe" -DBUILD_MODE:STRING=%buildType% -B build  -G "MinGW Makefiles"
+cd build
+make -j16
 cd ..
 
-echo Build TransmiterModule
-cd TransmiterModule
-call build.bat RELEASE
-cd ..
-
-::copy result hex file to the root
-copy RcModule\build\RcModule.hex RcModule.hex
-copy TransmiterModule\build\TransmiterModule.hex TransmiterModule.hex
+copy build\Retransmiter.hex Retransmiter.hex
