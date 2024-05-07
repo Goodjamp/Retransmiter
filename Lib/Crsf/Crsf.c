@@ -99,7 +99,8 @@ CrsfResult crsfDeserialiase(CrsfH *crsfHandler, uint8_t *buff, uint32_t size)
          */
         if (header->address == CRSF_ADDRESS_CRSF_RECEIVER
             || header->address == CRSF_ADDRESS_CRSF_TRANSMITTER
-            || header->address == CRSF_ADDRESS_RADIO_TRANSMITTER) {
+            || header->address == CRSF_ADDRESS_RADIO_TRANSMITTER
+            || header->address == CRSF_ADDRESS_CRSF_FLY_CONTROLER) {
             if (header->frameSize <= CRSF_MAX_PAYLOAD_SIZE
                 && header->frameSize >= CRSF_MIN_PAYLOAD_SIZE
                 && (k + 2 + header->frameSize) <= size) {
