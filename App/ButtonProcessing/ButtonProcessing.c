@@ -9,6 +9,7 @@
 #include "services.h"
 #include "CrsfTask.h"
 #include "BSP.h"
+#include "PlatformControlTask.h"
 
 #define UP_TIME(X)                    (xTaskGetTickCount() - X)
 #define BUTTON_GISTERESIS_MS          pdMS_TO_TICKS(110)
@@ -111,11 +112,13 @@ bool buttonInit(void)
     return true;
 }
 
-void buttonUpdate(uint8_t switcherState1, uint8_t buttonState1)
+void buttonUpdate(uint8_t switcherState1, uint8_t buttonState1, uint8_t buttonState2)
 {
     static TickType_t buttonGist1 = 0;
-    static uint8_t switcherPrevState1 = 255;
     static uint8_t buttonPrevState1 = 255;
+    static TickType_t buttonGist2 = 0;
+    static uint8_t buttonPrevState2 = 255;
+    static uint8_t switcherPrevState1 = 255;
 
     if (switcherPrevState1 != switcherState1) {
         switcherPrevState1 = switcherState1;
@@ -160,6 +163,16 @@ void buttonUpdate(uint8_t switcherState1, uint8_t buttonState1)
                     keyAction(KEY_SWITCH_CH_58_TX);
                     break;
                 }
+            }
+        }
+    }
+
+    if (buttonPrevState2 != buttonState2) {
+        buttonPrevState2 = buttonState2;
+        if (buttonState2 == 1) {
+            if (UP_TIME(buttonGist2) > BUTTON_GISTERESIS_MS) {
+                buttonGist2 = xTaskGetTickCount();
+                platformControlUpdateState();
             }
         }
     }

@@ -22,6 +22,14 @@
 #define TASK_APPLICATION_STACK_SIZE    512
 #define TASK_APPLICATION_PRIORITY      4
 
+
+/*
+ * PlatformControl task properties description
+ */
+#define TASK_PLATFORMCONTROL_ASCII_NAME    "Platf control task"
+#define TASK_PLATFORMCONTROL_STACK_SIZE    512
+#define TASK_PLATFORMCONTROL_PRIORITY      4
+
 /*
  * New task properties description
  */

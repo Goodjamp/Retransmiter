@@ -20,6 +20,7 @@
 
 #define CRSF_TASK_RC_CH_KEY_TRIGER               5
 #define CRSF_TASK_RC_CH_KEY                      6
+#define CRSF_TASK_RC_CH_CALIB                    7
 
 #define CRSF_TASK_COMMANDS_QUEUE_ITEMS           4
 
@@ -133,7 +134,8 @@ static void rxCrsfFrameCb(CrsfAddress address, CrsfFrame *frame)
                            &frame->payload.rcChannelsPacked);
 
         buttonUpdate(crsfTaskDecode3StateSw(frame->payload.rcChannelsPacked.chValue[CRSF_TASK_RC_CH_KEY_TRIGER]),
-                     crsfTaskDecode2StateSw(frame->payload.rcChannelsPacked.chValue[CRSF_TASK_RC_CH_KEY]));
+                     crsfTaskDecode2StateSw(frame->payload.rcChannelsPacked.chValue[CRSF_TASK_RC_CH_KEY]),
+                     crsfTaskDecode2StateSw(frame->payload.rcChannelsPacked.chValue[CRSF_TASK_RC_CH_CALIB]));
         break;
 
     default:

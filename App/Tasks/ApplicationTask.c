@@ -61,42 +61,6 @@ void aplicationTaskLogMessage(const char *logStr)
 #endif
 }
 
-#include "stm32f4xx_ll_gpio.h"
-TimerHandle_t ledTimer;
-
-#define LED_PORT            GPIOC
-#define LED_PIN             LL_GPIO_PIN_13
-#define LED_BLINK_PERIOD    pdMS_TO_TICKS(100)
-
-static void ledTimerCb(TimerHandle_t xTimer)
-{
-    LL_GPIO_TogglePin(LED_PORT, LED_PIN);
-}
-
-static bool initLedIndication(void)
-{
-    LL_GPIO_InitTypeDef gpioSettings;
-
-    servicesEnablePerephr(LED_PORT);
-
-    gpioSettings.Mode = LL_GPIO_MODE_OUTPUT;
-    gpioSettings.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
-    gpioSettings.Pin = LED_PIN;
-    gpioSettings.Pull = LL_GPIO_PULL_NO;
-    gpioSettings.Speed = LL_GPIO_SPEED_FREQ_LOW;
-    LL_GPIO_Init(LED_PORT, &gpioSettings);
-
-    ledTimer = xTimerCreate("Led timer",
-                            LED_BLINK_PERIOD,
-                            pdTRUE, NULL, ledTimerCb);
-    if (ledTimer == NULL) {
-        return false;
-    }
-    xTimerStart(ledTimer, 10);
-
-    return true;
-}
-
 void memBuffReset(void)
 {
 
@@ -215,8 +179,6 @@ bool applicationTaskInit(void)
 
     memBuffReset();
 
-    initLedIndication();
-    
     if (xTaskCreate(applicationTask,
                        TASK_APPLICATION_ASCII_NAME,
                        TASK_APPLICATION_STACK_SIZE,

@@ -5,6 +5,6 @@
 #include <stdbool.h>
 
 bool buttonInit(void);
-bool buttonUpdate(uint16_t videoComutatorSwitch, uint16_t videoChSwitch);
+void buttonUpdate(uint8_t switcherState1, uint8_t buttonState1, uint8_t buttonState2);
 
 #endif

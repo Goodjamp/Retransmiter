@@ -6,12 +6,14 @@
 #include "ButtonsTask.h"
 #include "ApplicationTask.h"
 #include "DebugServices.h"
+#include "PlatformControlTask.h"
 
 void vApplicationDaemonTaskStartupHook(void)
 {
     debugServicesInit(NULL);
     crsfTaskInit();
     buttonsTaskInit();
+    platformControlTaskInit();
     applicationTaskInit();
 }
 

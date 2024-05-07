@@ -24,6 +24,8 @@ set( APP_SRC
     App/Tasks/CrsfTask.c
     App/Tasks/ButtonsTask.c
     App/Tasks/ApplicationTask.c
+    App/Tasks/PlatformControlTask.c
+    App/Tasks/PlatformControlTask.h
     App/ButtonProcessing/ButtonProcessing.c
     App/ButtonProcessing/ButtonProcessing.h
 )
@@ -41,16 +43,21 @@ set( BSP_SRC
     BSP/Services/Services.c
     BSP/SystemClock/SystemClock.c
     BSP/Storage/Storage.c
+    BSP/I2c/I2c.c
+    BSP/I2c/I2c.h
+    BSP/ExtEv/ExtEv.c
+    BSP/ExtEv/ExtEv.h
 )
 
 set( BSP_PATH
     BSP
     BSP/Usart
-    BSP/Spi
+    BSP/I2c
     BSP/Buttons
     BSP/Services
     BSP/SystemClock
     BSP/Storage
+    BSP/ExtEv
 )
 
 set( GENERYC_SRC
@@ -89,6 +96,8 @@ set( GENERYC_SRC
     Lib/DebugServices/DebugServices.c
     Lib/RingBuff/RingBuff.c
     Lib/System/SystemRtos.c
+    Lib/Lsm303dlhc/Lsm303dlhc.c
+    Lib/Lsm303dlhc/Lsm303dlhc.h
 )
 
 set(GENERYC_PATH
@@ -113,6 +122,7 @@ set(GENERYC_PATH
     Lib/DebugServices
     Lib/RingBuff
     Lib/System
+    Lib/Lsm303dlhc
 )
 
 set (RTT_SRC
@@ -133,6 +143,7 @@ add_definitions(
     -DSTM32F411xE
 
     -DCSFR_MAX_PACKET_SIZE=${CSFR_MAX_PACKET_SIZE}
+    -DLSM303DLHC_ITEMS_NUMBER=1
 )
 include_directories(${APP_PATH} ${BSP_PATH} ${GENERYC_PATH} ${RTT_PATH})
 
