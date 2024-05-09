@@ -173,6 +173,17 @@ Lsm303dlhcHandler lsm303dlhcMInit(I2cTxCb txCb, I2cRxCb rxCb)
     return handler;
 }
 
+Lsm303dlhcStatus lsm303dlhcMReset(Lsm303dlhcHandler handler)
+{
+    if (handler == NULL) {
+        return LSM303DLHC_STATUS_HANDLER_NULL_ERROR;
+    }
+
+    handler->bussy = false;
+
+    return LSM303DLHC_STATUS_OK;
+}
+
 Lsm303dlhcStatus lsm303dlhcIsConnected(Lsm303dlhcHandler handler, bool *isConnect)
 {
     uint8_t verifyData[LSM303DLHC_VERIFY_DATA_SIZE];

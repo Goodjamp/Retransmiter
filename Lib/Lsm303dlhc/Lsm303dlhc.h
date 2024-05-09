@@ -54,6 +54,7 @@ typedef struct Lsm303dlhcS * Lsm303dlhcHandler;
  * @brief Init the magnetic measurements of the lsm303dlhc sensor
  */
 Lsm303dlhcHandler lsm303dlhcMInit(I2cTxCb txCb, I2cRxCb rxCb);
+Lsm303dlhcStatus lsm303dlhcMReset(Lsm303dlhcHandler handler);
 Lsm303dlhcStatus lsm303dlhcIsConnected(Lsm303dlhcHandler handler, bool *isConnect);
 Lsm303dlhcStatus lsm303dlhcMSetRate(Lsm303dlhcHandler handler, Lsm303dlhcMRate rate);
 Lsm303dlhcStatus lsm303dlhcMSetGain(Lsm303dlhcHandler handler, Lsm303dlhcMGain gain);

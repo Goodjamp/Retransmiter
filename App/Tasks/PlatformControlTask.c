@@ -62,6 +62,8 @@ typedef struct {
 volatile struct {
     int16_t xCalib0;
     int16_t xCalib90;
+    int16_t yCalib0;
+    int16_t yCalib90;
     MovWindowH xWindow;
     MovWindowH yWindow;
     MovWindowH zWindow;
@@ -131,20 +133,20 @@ static inline int16_t lineInterpol(float x0, float y0, float x1, float y1, float
 static inline void plarformControlUpdate(int16_t mX, int16_t mY, int16_t mZ)
 {
     static volatile int16_t angle;
-    int16_t averageX;
+    static volatile int16_t averageY;
 
     switch (platformState) {
     case PLATFORM_STATE_CALIBRATE_0:
-        measureState.xCalib0 = moveWindowUpdate(&measureState.xWindow, mX);
+        measureState.yCalib0 = moveWindowUpdate(&measureState.yWindow, mY);
         break;
 
     case PLATFORM_STATE_CALIBRATE_90:
-        measureState.xCalib90 = moveWindowUpdate(&measureState.xWindow, mX);
+        measureState.yCalib90 = moveWindowUpdate(&measureState.yWindow, mY);
         break;
 
     case PLATFORM_STATE_WORK:
-        averageX = moveWindowUpdate(&measureState.xWindow, mX);
-        angle = lineInterpol(measureState.xCalib0, 0, measureState.xCalib90, 90, averageX);
+        averageY = moveWindowUpdate(&measureState.yWindow, mY);
+        angle = lineInterpol(measureState.yCalib0, 0, measureState.yCalib90, 90, averageY);
         setServoDegres(0, angle);
         break;
 
@@ -257,21 +259,26 @@ static void lsm303dlhcMMesCompleteCb(Lsm303dlhcMagnetic rawMagnetic, uint16_t an
 
 static void ledTimerCb(TimerHandle_t xTimer)
 {
-    LL_GPIO_TogglePin(LED_PORT, LED_PIN);
+    LL_GPIO_TogglePin(LED_INTERNAL_PORT, LED_INTERNAL_PIN);
+    LL_GPIO_TogglePin(LED_EXTERNAL_PORT, LED_EXTERNAL_PIN);
 }
 
 static bool initLedIndication(void)
 {
     LL_GPIO_InitTypeDef gpioSettings;
 
-    servicesEnablePerephr(LED_PORT);
-
     gpioSettings.Mode = LL_GPIO_MODE_OUTPUT;
     gpioSettings.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
-    gpioSettings.Pin = LED_PIN;
     gpioSettings.Pull = LL_GPIO_PULL_NO;
     gpioSettings.Speed = LL_GPIO_SPEED_FREQ_LOW;
-    LL_GPIO_Init(LED_PORT, &gpioSettings);
+
+    gpioSettings.Pin = LED_INTERNAL_PIN;
+    servicesEnablePerephr(LED_INTERNAL_PORT);
+    LL_GPIO_Init(LED_INTERNAL_PORT, &gpioSettings);
+
+    gpioSettings.Pin = LED_EXTERNAL_PIN;
+    servicesEnablePerephr(LED_EXTERNAL_PORT);
+    LL_GPIO_Init(LED_EXTERNAL_PORT, &gpioSettings);
 
     ledTimer = xTimerCreate("Led timer",
                             pdMS_TO_TICKS(LED_BLINK_PERIOD_CALIB_0),
@@ -326,9 +333,12 @@ static bool platformControlRunSensor(void)
 
 static void platformControlTask(void *userData)
 {
+
     while(true) {
         vTaskDelay(500);
         if (mesInProcess == false) {
+            i2cInit(I2C_TARGET_LSM303DLHC, i2cLsm303dlhcSettings);
+            lsm303dlhcMReset(lsm3030glhcHandler);
             platformControlRunSensor();
         }
         mesInProcess = false;
@@ -350,9 +360,6 @@ bool platformControlTaskInit(void)
         return false;
     }
 
-    volatile uint32_t cnt = 40000;
-    while(cnt--){}
-
     lsm3030glhcHandler = lsm303dlhcMInit(lsm3030dlhcI2cTx, lsm3030dlhcI2cRx);
     if (lsm3030glhcHandler == NULL) {
         return false;
@@ -361,7 +368,6 @@ bool platformControlTaskInit(void)
 
     initServoControl();
     initLedIndication();
-
 
     if (xTaskCreate(platformControlTask,
                     TASK_PLATFORMCONTROL_ASCII_NAME,

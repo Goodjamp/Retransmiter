@@ -50,6 +50,14 @@ static I2cResult i2cLsm303dlhcConfig(const Lsm303dlhcSettings *settings)
     volatile uint32_t resetCnt = I2C_WAITE_RESET_CNT;
 
     /*
+     * Reset I2C + DMA state. We can't reset DMA, becouse other source used this DMA. But we need ещ disable DMA stream.
+     */
+
+    NVIC_DisableIRQ(I2C1_EV_IRQn);
+    NVIC_DisableIRQ(I2C1_ER_IRQn);
+    LL_DMA_DisableStream(LSM303DLHC_I2C_DMA, LSM303DLHC_I2C_TX_DMA_STREAM);
+
+    /*
      ********************************GPIO*******************************************
      */
 
